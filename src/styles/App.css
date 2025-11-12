@@ -68,3 +68,170 @@
 .app.dark .canvas { 
   background-color: #1e1e1e; 
 }
+ 
+/* Toolbar Styles */ 
+.toolbar button { 
+  display: flex; 
+  align-items: center; 
+  gap: 0.25rem; 
+  padding: 0.5rem 0.75rem; 
+  border: 1px solid #ddd; 
+  background: white; 
+  border-radius: 6px; 
+  cursor: pointer; 
+  font-size: 14px; 
+  transition: all 0.2s; 
+} 
+ 
+.toolbar button:hover:not(:disabled) { 
+  background: #e0e0e0; 
+} 
+ 
+.toolbar button:disabled { 
+  opacity: 0.4; 
+  cursor: not-allowed; 
+} 
+ 
+.toolbar button.active { 
+  background: #007bff; 
+  color: white; 
+  border-color: #0056b3; 
+} 
+ 
+.toolbar-divider { 
+  width: 1px; 
+  height: 24px; 
+  background: #ddd; 
+  margin: 0 0.25rem; 
+} 
+ 
+.zoom-level { 
+  font-weight: 600; 
+  min-width: 50px; 
+  text-align: center; 
+} 
+ 
+/* Sidebar Styles */ 
+.sidebar button { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 0.25rem; 
+  padding: 0.5rem; 
+  width: 100%%; 
+  border: 1px solid #ddd; 
+  background: white; 
+  border-radius: 6px; 
+  cursor: pointer; 
+  font-size: 11px; 
+  transition: all 0.2s; 
+} 
+ 
+.sidebar button:hover { 
+  background: #e0e0e0; 
+} 
+ 
+.sidebar button.active { 
+  background: #007bff; 
+  color: white; 
+  border-color: #0056b3; 
+} 
+ 
+.sidebar button span { 
+  font-size: 10px; 
+  white-space: nowrap; 
+} 
+ 
+/* Properties Panel Styles */ 
+.properties-panel h3 { 
+  margin: 0 0 1rem 0; 
+  font-size: 16px; 
+  font-weight: 600; 
+} 
+ 
+.property-group { 
+  margin-bottom: 1.5rem; 
+} 
+ 
+.property-group label { 
+  display: block; 
+  margin-bottom: 0.5rem; 
+  font-size: 13px; 
+  font-weight: 500; 
+} 
+ 
+.color-picker { 
+  display: flex; 
+  gap: 0.5rem; 
+  align-items: center; 
+} 
+ 
+.color-picker input[type="color"] { 
+  width: 40px; 
+  height: 40px; 
+  border: 1px solid #ddd; 
+  border-radius: 6px; 
+  cursor: pointer; 
+} 
+ 
+.color-picker input[type="text"] { 
+  flex: 1; 
+  padding: 0.5rem; 
+  border: 1px solid #ddd; 
+  border-radius: 6px; 
+  font-family: monospace; 
+} 
+ 
+.button-group { 
+  display: flex; 
+  gap: 0.5rem; 
+} 
+ 
+.button-group button { 
+  flex: 1; 
+  padding: 0.5rem; 
+  border: 1px solid #ddd; 
+  background: white; 
+  border-radius: 6px; 
+  cursor: pointer; 
+  font-size: 12px; 
+  transition: all 0.2s; 
+} 
+ 
+.button-group button:hover { 
+  background: #e0e0e0; 
+} 
+ 
+.button-group button.active { 
+  background: #007bff; 
+  color: white; 
+  border-color: #0056b3; 
+} 
+ 
+.property-group input[type="range"] { 
+  width: 100%%; 
+} 
+ 
+.property-group input[type="number"] { 
+  width: 100%%; 
+  padding: 0.5rem; 
+  border: 1px solid #ddd; 
+  border-radius: 6px; 
+} 
+ 
+/* Dark Mode Overrides */ 
+.app.dark .toolbar button, 
+.app.dark .sidebar button, 
+.app.dark .button-group button, 
+.app.dark .color-picker input { 
+  background: #3a3a3a; 
+  border-color: #555; 
+  color: white; 
+} 
+ 
+.app.dark .toolbar button:hover:not(:disabled), 
+.app.dark .sidebar button:hover, 
+.app.dark .button-group button:hover { 
+  background: #4a4a4a; 
+} 
