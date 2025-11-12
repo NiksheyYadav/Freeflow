@@ -1,0 +1,26 @@
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
+}
+
+.app.dark {
+  background-color: var(--bg-primary);
+}
+
+/* Main layout with toolbar, sidebar, and properties panel */
+.app > * {
+  position: absolute;
+}
+
+/* Prevent text selection during drawing */
+.app {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
