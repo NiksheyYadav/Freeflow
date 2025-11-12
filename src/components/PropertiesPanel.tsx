@@ -13,9 +13,6 @@ export const PropertiesPanel: React.FC = () => {
     opacity, 
     roughness, 
     fontSize, 
-    fontFamily, 
-    updateElement, 
-    selectedElements, 
   } = useStore(); 
  
   return ( 
@@ -91,17 +88,17 @@ export const PropertiesPanel: React.FC = () => {
  
       <div className="property-group"> 
         <label>Opacity: {opacity}%%</label> 
-        <input type="range" min="0" max="100" value={opacity} /> 
+        <input type="range" min="0" max="100" value={opacity} readOnly /> 
       </div> 
  
       <div className="property-group"> 
         <label>Roughness: {roughness}</label> 
-        <input type="range" min="0" max="3" step="0.1" value={roughness} /> 
+        <input type="range" min="0" max="3" step="0.1" value={roughness} readOnly /> 
       </div> 
  
       <div className="property-group"> 
         <label>Font Size</label> 
-        <input type="number" value={fontSize} min="8" max="72" /> 
+        <input type="number" value={fontSize} min="8" max="72" readOnly /> 
       </div> 
     </div> 
   ); 

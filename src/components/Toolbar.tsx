@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { Undo2, Redo2, Download, Upload, Trash2, ZoomIn, ZoomOut, Grid3x3, Moon, Sun } from 'lucide-react'; 
 import { useStore } from '../store/useStore'; 
-import { exportToPNG, exportToSVG, exportToJSON, importFromJSON } from '../utils/export'; 
+import { exportToPNG, importFromJSON } from '../utils/export'; 
  
 export const Toolbar: React.FC = () => { 
   const { 
@@ -23,27 +23,19 @@ export const Toolbar: React.FC = () => {
   const canRedo = historyStep < history.length - 1; 
  
   const handleExportPNG = () => { 
-    exportToPNG(elements); 
-  }; 
- 
-  const handleExportSVG = () => { 
-    exportToSVG(elements); 
-  }; 
- 
-  const handleExportJSON = () => { 
-    exportToJSON(elements); 
+    exportToPNG(elements, 'freeflow-drawing.png'); 
   }; 
  
   const handleImportJSON = () => { 
-    importFromJSON(); 
+    importFromJSON('drawing.json'); 
   }; 
  
   return ( 
     <div className="toolbar"> 
-      <button onClick={undo} disabled={!canUndo} title="Undo ^(Ctrl+Z^)"> 
+      <button onClick={undo} disabled={!canUndo} title="Undo (Ctrl+Z)"> 
         <Undo2 size={20} /> 
       </button> 
-      <button onClick={redo} disabled={!canRedo} title="Redo ^(Ctrl+Shift+Z^)"> 
+      <button onClick={redo} disabled={!canRedo} title="Redo (Ctrl+Shift+Z)"> 
         <Redo2 size={20} /> 
       </button> 
  
