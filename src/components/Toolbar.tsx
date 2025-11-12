@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { 
   Undo, 
   Redo, 
@@ -16,7 +16,6 @@ import { exportToPNG, exportToSVG, exportToJSON, importFromJSON } from '../utils
 import '../styles/Toolbar.css';
 
 export const Toolbar: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const {
     elements,
     undo,

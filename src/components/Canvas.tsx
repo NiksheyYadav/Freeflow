@@ -200,7 +200,7 @@ export const Canvas: React.FC = () => {
         setSelectedElements([]);
         setSelectedElement(null);
       }
-    } else if (tool !== 'selection') {
+    } else {
       setAction('drawing');
       const newElement = createElement(
         tool,
