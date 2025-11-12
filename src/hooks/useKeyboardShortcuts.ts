@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 export const useKeyboardShortcuts = () => {
   useEffect(() => {
     // Placeholder for keyboard shortcuts functionality
-    const handleKeyDown = (_e: KeyboardEvent) => {
+    const handleKeyDown = () => {
       // TODO: Implement keyboard shortcuts
     };
 
