@@ -1,0 +1,1 @@
+collision detection utility functions for checking if a point is near a line and getting bounding boxes for elements
