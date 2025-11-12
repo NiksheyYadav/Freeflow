@@ -1,9 +1,12 @@
-import React from 'react';
-
-export const Canvas: React.FC = () => {
-  return (
-    <div className="canvas">
-      <canvas id="canvas" />
-    </div>
-  );
-};
+import React from 'react'; 
+import { useStore } from '../store/useStore'; 
+ 
+export const Canvas: React.FC = () => { 
+  const { gridEnabled } = useStore(); 
+ 
+  return ( 
+    <div className={`canvas ${gridEnabled ? 'grid-enabled' : ''}`}> 
+      <canvas id="canvas" /> 
+    </div> 
+  ); 
+}; 

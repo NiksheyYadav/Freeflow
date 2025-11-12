@@ -13,10 +13,13 @@ export const PropertiesPanel: React.FC = () => {
     opacity, 
     roughness, 
     fontSize, 
+    selectedElements, 
   } = useStore(); 
  
+  const isVisible = selectedElements.length > 0; 
+ 
   return ( 
-    <div className="properties-panel"> 
+    <div className={`properties-panel ${isVisible ? 'visible' : ''}`}> 
       <h3>Properties</h3> 
  
       <div className="property-group"> 
