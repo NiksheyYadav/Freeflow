@@ -11,6 +11,13 @@ interface StoreState extends AppState {
   setTool: (tool: ElementType) => void;
   setStrokeColor: (color: string) => void;
   setBackgroundColor: (color: string) => void;
+  setStrokeWidth: (width: number) => void;
+  setStrokeStyle: (style: string) => void;
+  setFillStyle: (style: string) => void;
+  setOpacity: (opacity: number) => void;
+  setRoughness: (roughness: number) => void;
+  setFontSize: (size: number) => void;
+  setFontFamily: (family: string) => void;
   setZoom: (zoom: number) => void;
   setOffset: (x: number, y: number) => void;
   undo: () => void;
@@ -77,6 +84,20 @@ export const useStore = create<StoreState>((set) => ({
   setStrokeColor: (color) => set({ strokeColor: color }),
 
   setBackgroundColor: (color) => set({ backgroundColor: color }),
+
+  setStrokeWidth: (width) => set({ strokeWidth: width as any }),
+
+  setStrokeStyle: (style) => set({ strokeStyle: style as any }),
+
+  setFillStyle: (style) => set({ fillStyle: style as any }),
+
+  setOpacity: (opacity) => set({ opacity }),
+
+  setRoughness: (roughness) => set({ roughness: roughness as any }),
+
+  setFontSize: (size) => set({ fontSize: size }),
+
+  setFontFamily: (family) => set({ fontFamily: family as any }),
 
   setZoom: (zoom) => set({ zoom: Math.max(0.1, Math.min(10, zoom)) }),
 
