@@ -20,7 +20,7 @@ interface StoreState extends AppState {
   toggleDarkMode: () => void;
 }
 
-export const useStore = create<StoreState>((set, get) => ({
+export const useStore = create<StoreState>((set) => ({
   elements: [],
   selectedElements: [],
   tool: 'selection',
