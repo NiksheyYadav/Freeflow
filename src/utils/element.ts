@@ -1,5 +1,5 @@
 import rough from 'roughjs';
-import { Element, Point, ElementType } from '../types';
+import { Element, ElementType } from '../types';
 import { nanoid } from 'nanoid';
 
 const generator = rough.generator();
@@ -70,7 +70,7 @@ export const generateRoughElement = (element: Element) => {
     case 'line':
       return generator.line(0, 0, element.width, element.height, options);
     
-    case 'arrow':
+    case 'arrow': {
       const arrowHeadSize = 15;
       const angle = Math.atan2(element.height, element.width);
       const arrowPoints: [number, number][] = [
@@ -82,13 +82,15 @@ export const generateRoughElement = (element: Element) => {
         line: generator.line(0, 0, element.width, element.height, options),
         arrowHead: generator.polygon(arrowPoints, options),
       };
+    }
     
-    case 'freedraw':
+    case 'freedraw': {
       if (!element.points || element.points.length < 2) return null;
       const pathData = element.points.map((point, index) => 
         index === 0 ? `M ${point.x} ${point.y}` : `L ${point.x} ${point.y}`
       ).join(' ');
       return generator.path(pathData, options);
+    }
     
     default:
       return null;
@@ -98,6 +100,7 @@ export const generateRoughElement = (element: Element) => {
 export const drawElement = (
   context: CanvasRenderingContext2D,
   element: Element,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rc: any
 ) => {
   context.save();
