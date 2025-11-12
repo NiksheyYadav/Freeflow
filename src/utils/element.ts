@@ -1,5 +1,5 @@
 import rough from 'roughjs';
-import { Element, ElementType } from '../types';
+import { Element, Point, ElementType } from '../types';
 import { nanoid } from 'nanoid';
 
 const generator = rough.generator();
