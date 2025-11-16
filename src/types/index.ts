@@ -7,7 +7,8 @@ export type ElementType =
   | 'line'
   | 'freedraw'
   | 'text'
-  | 'image';
+  | 'image'
+  | 'eraser';
 
 export type FillStyle = 'solid' | 'hachure' | 'cross-hatch';
 export type StrokeStyle = 'solid' | 'dashed' | 'dotted';

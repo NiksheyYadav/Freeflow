@@ -1,5 +1,5 @@
 import React from 'react'; 
-import { MousePointer, Square, Diamond, Circle, ArrowRight, Minus, Pen, Type } from 'lucide-react'; 
+import { MousePointer, Square, Diamond, Circle, ArrowRight, Minus, Pen, Type, Eraser } from 'lucide-react'; 
 import { useStore } from '../store/useStore'; 
 import { ElementType } from '../types'; 
  
@@ -14,6 +14,7 @@ export const Sidebar: React.FC = () => {
     { type: 'arrow', icon: <ArrowRight size={20} />, label: 'Arrow' }, 
     { type: 'line', icon: <Minus size={20} />, label: 'Line' }, 
     { type: 'freedraw', icon: <Pen size={20} />, label: 'Draw' }, 
+    { type: 'eraser', icon: <Eraser size={20} />, label: 'Eraser' },
     { type: 'text', icon: <Type size={20} />, label: 'Text' }, 
   ]; 
  
