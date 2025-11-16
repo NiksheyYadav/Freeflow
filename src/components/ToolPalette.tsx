@@ -304,6 +304,13 @@ export const ToolPalette: React.FC = () => {
           </>
         );
 
+      case 'eraser':
+        return (
+          <>
+            {renderStrokeWidth()}
+          </>
+        );
+
       case 'text':
         return (
           <>

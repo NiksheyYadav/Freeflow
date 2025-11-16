@@ -144,3 +144,60 @@
   border-color: #1976d2;
   color: white;
 }
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .tool-palette {
+    left: 0.5rem;
+    right: 0.5rem;
+    top: auto;
+    bottom: 4rem;
+    transform: none;
+    width: calc(100% - 1rem);
+    max-height: 40vh;
+    padding: 0.75rem;
+  }
+
+  .palette-section {
+    margin-bottom: 1rem;
+  }
+
+  .palette-section label {
+    font-size: 11px;
+  }
+
+  .color-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .color-btn {
+    width: 20px;
+    height: 20px;
+  }
+
+  .palette-btn {
+    padding: 0.35rem;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tool-palette {
+    padding: 0.5rem;
+    bottom: 3.5rem;
+  }
+
+  .palette-section {
+    margin-bottom: 0.75rem;
+  }
+
+  .color-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.2rem;
+  }
+
+  .color-btn {
+    width: 18px;
+    height: 18px;
+  }
+}

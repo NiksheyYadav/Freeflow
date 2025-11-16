@@ -9,6 +9,7 @@ export const Canvas: React.FC = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [startPoint, setStartPoint] = useState<Point | null>(null);
   const [currentElement, setCurrentElement] = useState<Element | null>(null);
+  const [cursorPos, setCursorPos] = useState<Point | null>(null);
 
   const {
     elements,
@@ -27,6 +28,7 @@ export const Canvas: React.FC = () => {
     offsetY,
     gridEnabled,
     addElement,
+    deleteElements,
   } = useStore();
 
   // Render a single element
@@ -174,32 +176,90 @@ export const Canvas: React.FC = () => {
     }
 
     ctx.restore();
-  }, [elements, currentElement, zoom, offsetX, offsetY, renderElement]);
+
+    // Draw eraser cursor if eraser tool is active
+    if (tool === 'eraser' && cursorPos) {
+      const eraserRadius = strokeWidth * 5;
+      ctx.save();
+      ctx.translate(offsetX, offsetY);
+      ctx.scale(zoom, zoom);
+      ctx.beginPath();
+      ctx.arc(cursorPos.x, cursorPos.y, eraserRadius, 0, 2 * Math.PI);
+      ctx.strokeStyle = '#ff4444';
+      ctx.lineWidth = 2 / zoom;
+      ctx.stroke();
+      ctx.restore();
+    }
+  }, [elements, currentElement, zoom, offsetX, offsetY, renderElement, tool, cursorPos, strokeWidth]);
+
+  // Check if a point is inside an element
+  const isPointInElement = (point: Point, element: Element): boolean => {
+    const eraserRadius = strokeWidth * 5; // Eraser size based on stroke width
+
+    // For freedraw, check if point is near any of the path points
+    if (element.type === 'freedraw' && element.points) {
+      return element.points.some(p => {
+        const distance = Math.sqrt(Math.pow(p.x - point.x, 2) + Math.pow(p.y - point.y, 2));
+        return distance <= eraserRadius;
+      });
+    }
+
+    // For other shapes, check if point is within bounding box with some tolerance
+    const minX = Math.min(element.x, element.x + element.width) - eraserRadius;
+    const maxX = Math.max(element.x, element.x + element.width) + eraserRadius;
+    const minY = Math.min(element.y, element.y + element.height) - eraserRadius;
+    const maxY = Math.max(element.y, element.y + element.height) + eraserRadius;
+
+    return point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY;
+  };
 
   // Get mouse position relative to canvas with zoom and offset
-  const getMousePos = (e: React.MouseEvent): Point => {
+  const getMousePos = (e: React.MouseEvent | React.TouchEvent): Point => {
     const canvas = canvasRef.current;
     if (!canvas) return { x: 0, y: 0 };
 
     const rect = canvas.getBoundingClientRect();
+    let clientX: number, clientY: number;
+
+    if ('touches' in e) {
+      // Touch event
+      if (e.touches.length === 0) return { x: 0, y: 0 };
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      // Mouse event
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
     return {
-      x: (e.clientX - rect.left - offsetX) / zoom,
-      y: (e.clientY - rect.top - offsetY) / zoom,
+      x: (clientX - rect.left - offsetX) / zoom,
+      y: (clientY - rect.top - offsetY) / zoom,
     };
   };
 
   // Handle mouse down
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     if (tool === 'selection') return; // Selection handled separately
 
+    e.preventDefault(); // Prevent default touch behavior
     const point = getMousePos(e);
     setIsDrawing(true);
     setStartPoint(point);
 
+    // Handle eraser tool
+    if (tool === 'eraser') {
+      const elementsToDelete = elements.filter(el => isPointInElement(point, el));
+      if (elementsToDelete.length > 0) {
+        deleteElements(elementsToDelete.map(el => el.id));
+      }
+      return;
+    }
+
     // Create initial element
     const newElement: Element = {
       id: nanoid(),
-      type: tool as Exclude<typeof tool, 'selection'>,
+      type: tool as Exclude<typeof tool, 'selection' | 'eraser'>,
       x: point.x,
       y: point.y,
       width: 0,
@@ -223,10 +283,28 @@ export const Canvas: React.FC = () => {
   };
 
   // Handle mouse move
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDrawing || !startPoint || !currentElement) return;
-
+  const handleMouseMove = (e: React.MouseEvent | React.TouchEvent) => {
     const point = getMousePos(e);
+
+    // Update cursor position for eraser visualization
+    if (tool === 'eraser') {
+      setCursorPos(point);
+    }
+
+    if (!isDrawing || !startPoint) return;
+
+    e.preventDefault(); // Prevent default touch behavior
+
+    // Handle eraser tool
+    if (tool === 'eraser') {
+      const elementsToDelete = elements.filter(el => isPointInElement(point, el));
+      if (elementsToDelete.length > 0) {
+        deleteElements(elementsToDelete.map(el => el.id));
+      }
+      return;
+    }
+
+    if (!currentElement) return;
 
     if (currentElement.type === 'freedraw') {
       // Add point to freedraw path
@@ -249,9 +327,18 @@ export const Canvas: React.FC = () => {
 
   // Handle mouse up
   const handleMouseUp = () => {
-    if (!isDrawing || !currentElement) return;
+    if (!isDrawing) return;
 
     setIsDrawing(false);
+
+    // Eraser doesn't create elements, just deletes them
+    if (tool === 'eraser') {
+      setCurrentElement(null);
+      setStartPoint(null);
+      return;
+    }
+
+    if (!currentElement) return;
 
     // Only add element if it has size (or is freedraw with points)
     if (
@@ -296,7 +383,14 @@ export const Canvas: React.FC = () => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        style={{ cursor: tool === 'selection' ? 'default' : 'crosshair' }}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleMouseMove}
+        onTouchEnd={handleMouseUp}
+        onTouchCancel={handleMouseUp}
+        style={{ 
+          cursor: tool === 'selection' ? 'default' : tool === 'eraser' ? 'none' : 'crosshair',
+          touchAction: 'none'
+        }}
       />
     </div>
   );
